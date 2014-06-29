@@ -65,3 +65,5 @@ packages/*
 
 #Test files
 *.testsettings
+.nuget/NuGet.Config
+.nuget/NuGet.targets

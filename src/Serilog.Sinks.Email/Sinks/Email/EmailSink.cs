@@ -125,7 +125,11 @@ namespace Serilog.Sinks.Email
                 SubjectEncoding = Encoding.UTF8
             };
 
+			#if __MonoCS__
+			 await Task.Factory.StartNew(()=>{_smtpClient.Send(mailMessage);});
+			#else
             await _smtpClient.SendMailAsync(mailMessage);
-        }
+			#endif
+		}
     }
 }

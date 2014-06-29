@@ -97,7 +97,11 @@ namespace Serilog.Sinks.MSSqlServer
                 using (var copy = new SqlBulkCopy(cn))
                 {
                     copy.DestinationTableName = _tableName;
+					#if __MonoCS__
+					await Task.Factory.StartNew(()=>{ copy.WriteToServer(_eventsTable, DataRowState.Added );});
+					#else
                     await copy.WriteToServerAsync(_eventsTable, _token.Token);
+					#endif
 
                     // Processed the items, clear for the next run
                     _eventsTable.Clear();

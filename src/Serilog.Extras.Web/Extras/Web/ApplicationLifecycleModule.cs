@@ -33,8 +33,13 @@ namespace Serilog.Extras.Web
         /// </summary>
         public static void Register()
         {
-            HttpApplication.RegisterModule(typeof(ApplicationLifecycleModule));
-        }
+			#if __MonoCS__
+			// Need to include the Microsoft.Web.Infrastructure package for this.
+			// Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(typeof(ApplicationLifecycleModule));
+			#else
+				HttpApplication.RegisterModule(typeof(ApplicationLifecycleModule));
+			#endif
+		}
 
         /// <summary>
         /// When set to true, form data will be written via a debug-level event.
